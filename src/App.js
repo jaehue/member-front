@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Icon } from 'antd-mobile';
 import styles from './App.css';
+import MemberList from './components/MemberList'
 
 const customIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 841.9 595.3">
@@ -21,6 +22,7 @@ class App extends Component {
           <div style={{ width: 60, height:60 }}>{customIcon()}</div>
           <h2>Welcome to React</h2>
         </div>
+        <MemberList />
         <p className={styles['App-intro']}>
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
