@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 import { NavBar, SearchBar, WhiteSpace } from "antd-mobile";
 import AttendanceDetail from "./AttendanceDetail";
 import config from "./../config";
-import { get } from "./../utils/fetcher";
+import { get, post } from "./../utils/fetcher";
 
 
 class Attendance extends Component {
@@ -15,7 +15,6 @@ class Attendance extends Component {
     }
     componentDidMount = _ => {
         if (this.props.match) {
-            this.setState({ date: this.props.match.params.date })
             this.search(this.props.match.params.date)
         }
     }
@@ -49,7 +48,7 @@ class Attendance extends Component {
                 continue;
             }
         }
-        this.setState({ groups });
+        this.setState({ id: res.result.id, date, groups });
     }
     setAttendance = (teacherId, studentId, isAttendance) => {
         const changes = this.state.changes
@@ -75,8 +74,24 @@ class Attendance extends Component {
         student.isAttendance = isAttendance
         this.setState({ changes, groups })
     }
-    save = _ => {
-        console.log(this.state.changes)
+    save = async _ => {
+        const attendanceMembers = []
+        for (const key in this.state.changes) {
+            if (this.state.changes.hasOwnProperty(key)) {
+                const isAttendance = this.state.changes[key];
+                attendanceMembers.push({
+                    memberId: parseInt(key),
+                    isAttendance: isAttendance,
+                })
+            }
+        }
+
+        const res = await post(`${config.api}/v1/attendances/${this.state.id}/members`, attendanceMembers);
+        if (!res.success) {
+            return;
+        }
+        console.log(res.result)
+
     }
     render = _ => {
         return (
