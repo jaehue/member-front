@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { List, Card, Button, Checkbox, Icon } from "antd-mobile";
 import { getTeacherById } from './../appData';
+import groupImage from './../assets/group.png'
 
 class AttendanceDetail extends Component {
     state = {
@@ -31,7 +32,7 @@ class AttendanceDetail extends Component {
                 <Card full>
                     <Card.Header
                         title={`${tearcherName} 선생님`}
-                        thumb="https://gw.alipayobjects.com/zos/rmsportal/MRhHctKOineMbKAZslML.jpg"
+                        thumb={<img src={groupImage} width='22px'/>}
                         extra={
                         <Button
                             type="primary"
