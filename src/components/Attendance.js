@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import { withRouter } from 'react-router-dom'
-import { NavBar, SearchBar, WhiteSpace } from "antd-mobile";
+import { NavBar, SearchBar, WhiteSpace, Icon } from "antd-mobile";
 import AttendanceDetail from "./AttendanceDetail";
 import config from "./../config";
 import { get, post } from "./../utils/fetcher";
+import reloadImage from './../assets/reload.png'
 
 
 class Attendance extends Component {
     state = {
+        loading: false,
         date: '',
         filter: '',
         groups: [],
@@ -19,7 +21,9 @@ class Attendance extends Component {
         }
     }
     search = async date => {
+        this.setState({loading: true})
         const res = await get(`${config.api}/v1/attendances/${date}`);
+        this.setState({loading: false})
         if (!res.success) {
             return;
         }
@@ -101,6 +105,11 @@ class Attendance extends Component {
                     leftContent="전체보기"
                     style={{backgroundColor: 'black'}}
                     onLeftClick={_ => {this.props.history.push('/')}}
+                    rightContent={this.state.loading
+                        ? <Icon type="loading"></Icon>
+                        : <a onClick={_ => this.search(this.state.date)}>
+                            <img src={reloadImage} width='23' style={{marginTop: '5px', marginRight: '4px'}}/>
+                        </a>}
                 >{this.state.date}</NavBar>
                 <SearchBar
                     placeholder="Search"

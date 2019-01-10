@@ -1,23 +1,30 @@
 import React, { Component } from "react";
-import { List, Icon } from "antd-mobile";
+import { List, Icon, NavBar } from "antd-mobile";
 import config from "./../config";
 import styles from './../App.css';
 import { get } from "./../utils/fetcher";
+import reloadImage from './../assets/reload.png'
 
 const Item = List.Item;
 const Brief = Item.Brief;
 
 class AttendanceList extends Component {
     state = {
+        loading: false,
         attendances: []
     };
-    componentDidMount = async _ => {
+    componentDidMount = _ => {
+        this.search()
+    }
+    search = async _ => {
+        this.setState({loading: true})
         const res = await get(`${config.api}/v1/attendances`);
+        this.setState({loading: false})
         if (!res.success) {
             return;
         }
         this.setState({ attendances: res.result });
-    };
+    }
     render = _ => {
         return (
             <div>
@@ -25,7 +32,16 @@ class AttendanceList extends Component {
                     <Icon type="success" size="lg" />
                     <h1>2019 마하나임</h1>
                 </div>
-                <List renderHeader={() => "출석현황"}>
+                <NavBar
+                    mode="dark"
+                    style={{backgroundColor: 'black'}}
+                    rightContent={this.state.loading
+                        ? <Icon type="loading"></Icon>
+                        : <a onClick={_ => this.search()}>
+                            <img src={reloadImage} width='23' style={{marginTop: '5px', marginRight: '4px'}}/>
+                        </a>}
+                >출석현황</NavBar>
+                <List>
                     {this.state.attendances.map(d => (
                         <Item key={d.id}
                             arrow="horizontal"
@@ -33,7 +49,7 @@ class AttendanceList extends Component {
                             onClick={_ => {this.props.history.push('/'+d.date)}}
                         >
                             {d.date}
-                            <Brief>선생님 {d.teacherCount} | 힉생 {d.studentCount}</Brief>
+                            <Brief>힉생 {d.studentCount}</Brief>
                         </Item>
                     ))}
                 </List>
