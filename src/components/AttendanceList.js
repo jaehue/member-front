@@ -42,7 +42,7 @@ class AttendanceList extends Component {
                         </a>}
                 >출석현황</NavBar>
                 <List>
-                    {this.state.attendances.map(d => (
+                    {!this.state.attendances ? '' : this.state.attendances.map(d => (
                         <Item key={d.id}
                             arrow="horizontal"
                             multipleLine
