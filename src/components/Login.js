@@ -6,10 +6,13 @@ import config from "./../config";
 
 class Login extends Component {
     state = {
+        loading: false,
         password: ''
     }
     login = async _ => {
-        const res = await post(`${config().api}/v1/login`, this.state);
+        this.setState({ loading: true })
+        const res = await post(`${config().api}/v1/login`, {password: this.state.password});
+        this.setState({ loading: false })
         if (!res.success) {
             Toast.fail(res.error.message, 1)
             return
@@ -29,7 +32,13 @@ class Login extends Component {
                     Password
                 </InputItem>
                 <WhiteSpace />
-                <Button style={{backgroundColor: 'black', color: 'white'}} onClick={this.login}>로그인</Button>
+                <Button
+                    icon={this.state.loading ? "loading" : "check-circle-o"}
+                    style={{backgroundColor: 'black', color: 'white'}}
+                    onClick={this.login}
+                >
+                    로그인
+                </Button>
             </div>
         );
     };
