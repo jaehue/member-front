@@ -1,8 +1,11 @@
+import { getToken } from './../appData';
+
 const callApi = (method, url, body, cb) => new Promise((resolve, reject) => {
     let fetchInit = {
         method: method,
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + getToken()
         }
     }
     if (body) {

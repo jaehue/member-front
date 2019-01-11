@@ -4,6 +4,7 @@ import { NavBar, SearchBar, WhiteSpace, Icon } from "antd-mobile";
 import AttendanceDetail from "./AttendanceDetail";
 import config from "./../config";
 import { get, post } from "./../utils/fetcher";
+import { getToken } from './../appData';
 import reloadImage from './../assets/reload.png'
 
 
@@ -16,6 +17,11 @@ class Attendance extends Component {
         changes: {}
     }
     componentDidMount = _ => {
+        if (!getToken()) {
+            this.props.history.push('/login')
+            return
+        }
+
         if (this.props.match) {
             this.search(this.props.match.params.date)
         }
@@ -24,6 +30,12 @@ class Attendance extends Component {
         this.setState({loading: true})
         const res = await get(`${config().api}/v1/attendances/${date}`);
         this.setState({loading: false})
+
+        if (res.message && res.message === 'invalid or expired jwt') {
+            this.props.history.push('/login')
+            return
+        }
+
         if (!res.success) {
             return;
         }

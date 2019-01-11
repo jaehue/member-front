@@ -3,6 +3,7 @@ import { List, Icon, NavBar } from "antd-mobile";
 import config from "./../config";
 import styles from './../App.css';
 import { get } from "./../utils/fetcher";
+import { getToken, setTeachers } from './../appData';
 import reloadImage from './../assets/reload.png'
 
 const Item = List.Item;
@@ -13,13 +14,28 @@ class AttendanceList extends Component {
         loading: false,
         attendances: []
     };
-    componentDidMount = _ => {
+    componentDidMount = async _ => {
+        if (!getToken()) {
+            this.props.history.push('/login')
+            return
+        }
         this.search()
+
+        const res = await get(`${config().api}/v1/members?memberType=1`)
+        if (res.success) {
+            setTeachers(res.result)
+        }
     }
     search = async _ => {
         this.setState({loading: true})
         const res = await get(`${config().api}/v1/attendances`);
         this.setState({loading: false})
+
+        if (res.message && res.message === 'invalid or expired jwt') {
+            this.props.history.push('/login')
+            return
+        }
+
         if (!res.success) {
             return;
         }
