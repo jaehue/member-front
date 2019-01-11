@@ -22,7 +22,7 @@ class Attendance extends Component {
     }
     search = async date => {
         this.setState({loading: true})
-        const res = await get(`${config.api}/v1/attendances/${date}`);
+        const res = await get(`${config().api}/v1/attendances/${date}`);
         this.setState({loading: false})
         if (!res.success) {
             return;
@@ -90,7 +90,7 @@ class Attendance extends Component {
             }
         }
 
-        const res = await post(`${config.api}/v1/attendances/${this.state.id}/members`, attendanceMembers);
+        const res = await post(`${config().api}/v1/attendances/${this.state.id}/members`, attendanceMembers);
         if (!res.success) {
             return;
         }

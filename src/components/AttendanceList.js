@@ -18,7 +18,7 @@ class AttendanceList extends Component {
     }
     search = async _ => {
         this.setState({loading: true})
-        const res = await get(`${config.api}/v1/attendances`);
+        const res = await get(`${config().api}/v1/attendances`);
         this.setState({loading: false})
         if (!res.success) {
             return;

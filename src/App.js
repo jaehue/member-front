@@ -9,7 +9,7 @@ import Attendance from './components/Attendance'
 
 class App extends Component {
     componentDidMount = async _ => {
-        const res = await get(`${config.api}/v1/members?memberType=1`)
+        const res = await get(`${config().api}/v1/members?memberType=1`)
         if (res.success) {
             setTeachers(res.result)
         }
