@@ -3,7 +3,7 @@ import { List, Icon, NavBar } from "antd-mobile";
 import config from "./../config";
 import styles from './../App.css';
 import { get } from "./../utils/fetcher";
-import { getToken, setTeachers } from './../appData';
+import { getToken } from './../appData';
 import reloadImage from './../assets/reload.png'
 
 const Item = List.Item;
@@ -20,11 +20,6 @@ class AttendanceList extends Component {
             return
         }
         this.search()
-
-        const res = await get(`${config().api}/v1/members?memberType=1`)
-        if (res.success) {
-            setTeachers(res.result)
-        }
     }
     search = async _ => {
         this.setState({loading: true})

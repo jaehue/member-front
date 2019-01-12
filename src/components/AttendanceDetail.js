@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { List, Card, Button, Checkbox, Icon } from "antd-mobile";
-import { getTeacherById } from './../appData';
 import groupImage from './../assets/group.png'
 
 class AttendanceDetail extends Component {
@@ -24,14 +23,13 @@ class AttendanceDetail extends Component {
             students = students.filter(s => s.name.includes(this.props.filter))
         }
 
-        const tearcher = getTeacherById(this.props.data.teacherId)
-        const tearcherName = tearcher ? tearcher.name : ''
+        const teacherName = this.props.data.teacherName
 
         return (
             <div>
                 <Card full>
                     <Card.Header
-                        title={`${tearcherName} 선생님`}
+                        title={`${teacherName} 선생님`}
                         thumb={<img src={groupImage} width='22px'/>}
                         extra={
                         <Button

@@ -42,13 +42,24 @@ class Attendance extends Component {
 
         const accumulator = res.result.members.reduce((a, t) => {
             if (!t.teacherId) {
+                if (a[t.id]) {
+                    a[t.id].teacherName = t.name
+                } else {
+                    a[t.id] = {
+                        teacherName: t.name,
+                        students: []
+                    }
+                }
+
                 return a;
             }
 
             if (a[t.teacherId]) {
-                a[t.teacherId].push(t)
+                a[t.teacherId].students.push(t)
             } else {
-                a[t.teacherId] = [t]
+                a[t.teacherId] = {
+                    students: [t]
+                }
             }
 
             return a;
@@ -59,11 +70,13 @@ class Attendance extends Component {
             if (accumulator.hasOwnProperty(teacherId)) {
                 groups.push({
                     teacherId: teacherId,
-                    students: accumulator[teacherId],
+                    teacherName: accumulator[teacherId].teacherName,
+                    students: accumulator[teacherId].students,
                 })
                 continue;
             }
         }
+
         this.setState({ id: res.result.id, date, groups });
     }
     setAttendance = (teacherId, studentId, isAttendance) => {
@@ -106,8 +119,6 @@ class Attendance extends Component {
         if (!res.success) {
             return;
         }
-        console.log(res.result)
-
     }
     render = _ => {
         return (
