@@ -65,7 +65,7 @@ class AttendanceList extends Component {
                             onClick={_ => {this.props.history.push('/'+d.date)}}
                         >
                             {d.date}
-                            <Brief>힉생 {d.studentCount}</Brief>
+                            <Brief>학생 {d.studentCount}</Brief>
                         </Item>
                     ))}
                 </List>
