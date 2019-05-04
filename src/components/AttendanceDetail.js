@@ -11,7 +11,7 @@ class AttendanceDetail extends Component {
         let absences = 0
 
         for (let index = 0; index < this.props.data.students.length; index++) {
-            if (this.props.data.students[index].isAttendance) {
+            if (this.props.data.students[index].lastChecks[0].isAttendance) {
                 attendance += 1;
             } else {
                 absences += 1;
@@ -47,19 +47,41 @@ class AttendanceDetail extends Component {
                         </Button>}
                     />
                     <Card.Body>
-                        <List renderHeader={() => <span>출석 {attendance} | 결석 {absences}</span>}>
+                        <List renderHeader={() => <div>
+                                <span>출석 {attendance} | 결석 {absences}</span>
+                                <div style={{float: 'right', marginRight: '6px'}}>
+                                    {
+                                        students.length <= 0 ? '' :
+                                        <div>
+                                            <span>{students[0].lastChecks[1].date.substring(5,10)}</span>
+                                            <span>&nbsp;&nbsp;...&nbsp;&nbsp;</span>
+                                            <span>{students[0].lastChecks[4].date.substring(5,10)}</span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>}>
                             {students.map(s =>
                                 <div key={s.id}>
                                 {this.state.disabled ?
-                                    <List.Item>
+                                    <List.Item extra={
+                                        s.lastChecks.slice(1).map(c =>
+                                            <span key={c.date}>
+                                                <Icon
+                                                    type={c.isAttendance?'check-circle':'cross-circle'}
+                                                    size='xxs'
+                                                    style={{marginRight: '10px', marginTop:'10px'}}
+                                                />
+                                            </span>
+                                        )
+                                        }>
                                         <Icon
                                             size={'sm'}
-                                            type={s.isAttendance ? 'check-circle' : 'cross-circle'}
+                                            type={s.lastChecks[0].isAttendance ? 'check-circle' : 'cross-circle'}
                                             style={{marginBottom: '-5px', marginRight: '15px'}}
                                         />{s.name}
                                     </List.Item> :
                                     <Checkbox.CheckboxItem
-                                        checked={s.isAttendance}
+                                        checked={s.lastChecks[0].isAttendance}
                                         onChange={e => this.props.onChange(this.props.data.teacherId, s.id, e.target.checked)}
                                     >
                                         {s.name}

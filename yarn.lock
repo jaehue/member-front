@@ -159,8 +159,8 @@ ansi-styles@^3.0.0, ansi-styles@^3.2.1:
     color-convert "^1.9.0"
 
 antd-mobile@^2.2.8:
-  version "2.2.8"
-  resolved "http://r.cnpmjs.org/antd-mobile/download/antd-mobile-2.2.8.tgz#d69d21a7778b9de4e0f406dd68b4df47de2c19e6"
+  version "2.2.13"
+  resolved "http://r.cnpmjs.org/antd-mobile/download/antd-mobile-2.2.13.tgz#ae9a2b33ed8af52ed92127b50691af401ac4c8ce"
   dependencies:
     array-tree-filter "~2.1.0"
     babel-runtime "6.x"

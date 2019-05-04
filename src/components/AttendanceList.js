@@ -57,7 +57,10 @@ class AttendanceList extends Component {
                         <Item key={d.id}
                             arrow="horizontal"
                             multipleLine
-                            onClick={_ => {this.props.history.push('/'+d.date)}}
+                            onClick={_ => {this.props.history.push({
+                                pathname:'/'+d.date,
+                                state: { attendanceId: d.id }
+                            })}}
                         >
                             {d.date}
                             <Brief>학생 {d.studentCount}</Brief>

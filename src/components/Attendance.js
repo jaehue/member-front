@@ -21,6 +21,19 @@ class Attendance extends Component {
             this.props.history.push('/login')
             return
         }
+        if (!this.props.location.state) {
+            this.props.history.push('/')
+            return
+        }
+        if (!this.props.location.state.attendanceId) {
+            this.props.history.push('/')
+            return
+        }
+
+        this.setState({
+            attendanceId: this.props.location.state.attendanceId
+        })
+
 
         if (this.props.match) {
             this.search(this.props.match.params.date)
@@ -28,7 +41,7 @@ class Attendance extends Component {
     }
     search = async date => {
         this.setState({loading: true})
-        const res = await get(`${config().api}/v1/attendances/${date}`);
+        const res = await get(`${config().api}/v1/attendances/latest/${date}`);
         this.setState({loading: false})
 
         if (res.message && res.message === 'invalid or expired jwt') {
@@ -40,7 +53,7 @@ class Attendance extends Component {
             return;
         }
 
-        const accumulator = res.result.members.reduce((a, t) => {
+        const accumulator = res.result.reduce((a, t) => {
             if (!t.teacherId) {
                 if (a[t.id]) {
                     a[t.id].teacherName = t.name
@@ -100,7 +113,7 @@ class Attendance extends Component {
 
         const groups = this.state.groups;
         let student = groups.find(g => g.teacherId === teacherId).students.find(s => s.id === studentId)
-        student.isAttendance = isAttendance
+        student.lastChecks[0].isAttendance = isAttendance
         this.setState({ changes, groups })
     }
     save = async _ => {
@@ -115,7 +128,7 @@ class Attendance extends Component {
             }
         }
 
-        const res = await post(`${config().api}/v1/attendances/${this.state.id}/members`, attendanceMembers);
+        const res = await post(`${config().api}/v1/attendances/${this.state.attendanceId}/members`, attendanceMembers);
         if (!res.success) {
             return;
         }
