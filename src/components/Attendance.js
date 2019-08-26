@@ -14,7 +14,8 @@ class Attendance extends Component {
         date: '',
         filter: '',
         groups: [],
-        changes: {}
+        changes: {},
+        totalAttendance: 0,
     }
     componentDidMount = _ => {
         if (!getToken()) {
@@ -53,7 +54,11 @@ class Attendance extends Component {
             return;
         }
 
+        let totalAttendance = 0;
         const accumulator = res.result.reduce((a, t) => {
+            if (t.teacherId && t.lastChecks[0].isAttendance == true) {
+                totalAttendance += 1;
+            }
             if (!t.teacherId) {
                 if (a[t.id]) {
                     a[t.id].teacherName = t.name
@@ -90,7 +95,7 @@ class Attendance extends Component {
             }
         }
 
-        this.setState({ id: res.result.id, date, groups });
+        this.setState({ id: res.result.id, date, groups, totalAttendance });
     }
     setAttendance = (teacherId, studentId, isAttendance) => {
         const changes = this.state.changes
@@ -132,6 +137,8 @@ class Attendance extends Component {
         if (!res.success) {
             return;
         }
+
+        this.setState({totalAttendance: res.result.members.length});
     }
     render = _ => {
         return (
@@ -146,7 +153,7 @@ class Attendance extends Component {
                         : <a onClick={_ => this.search(this.state.date)}>
                             <img src={reloadImage} width='23' style={{marginTop: '5px', marginRight: '4px'}}/>
                         </a>}
-                >{this.state.date}</NavBar>
+                >{this.state.date}&nbsp;<small>{this.state.totalAttendance === 0 ? '' : `(출석:${this.state.totalAttendance})`}</small></NavBar>
                 <SearchBar
                     placeholder="Search"
                     maxLength={8}
