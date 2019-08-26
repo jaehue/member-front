@@ -56,7 +56,7 @@ class Attendance extends Component {
 
         let totalAttendance = 0;
         const accumulator = res.result.reduce((a, t) => {
-            if (t.teacherId && t.lastChecks[0].isAttendance == true) {
+            if (t.teacherId && t.lastChecks[0].isAttendance === true) {
                 totalAttendance += 1;
             }
             if (!t.teacherId) {
@@ -133,7 +133,9 @@ class Attendance extends Component {
             }
         }
 
+        this.setState({loading: true})
         const res = await post(`${config().api}/v1/attendances/${this.state.attendanceId}/members`, attendanceMembers);
+        this.setState({loading: false})
         if (!res.success) {
             return;
         }

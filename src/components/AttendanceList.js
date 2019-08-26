@@ -4,7 +4,6 @@ import config from "./../config";
 import styles from './../App.css';
 import { get } from "./../utils/fetcher";
 import { getToken } from './../appData';
-import reloadImage from './../assets/reload.png'
 
 const Item = List.Item;
 const Brief = Item.Brief;
@@ -46,11 +45,16 @@ class AttendanceList extends Component {
                 <NavBar
                     mode="dark"
                     style={{backgroundColor: 'black'}}
-                    rightContent={this.state.loading
-                        ? <Icon type="loading"></Icon>
-                        : <a onClick={_ => this.search()}>
-                            <img src={reloadImage} width='23' style={{marginTop: '5px', marginRight: '4px'}}/>
-                        </a>}
+                    rightContent={
+                        <a onClick={_ => this.props.history.push('/total')}>
+                            <Icon type="ellipsis" />
+                        </a>
+                    }
+                    // rightContent={this.state.loading
+                    //     ? <Icon type="loading"></Icon>
+                    //     : <a onClick={_ => this.search()}>
+                    //         <img src={reloadImage} width='23' style={{marginTop: '5px', marginRight: '4px'}}/>
+                    //     </a>}
                 >출석현황</NavBar>
                 <List>
                     {!this.state.attendances ? '' : this.state.attendances.map(d => (
