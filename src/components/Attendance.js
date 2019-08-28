@@ -41,9 +41,9 @@ class Attendance extends Component {
         }
     }
     search = async date => {
-        this.setState({loading: true})
+        this.setState({ loading: true })
         const res = await get(`${config().api}/v1/attendances/latest/${date}`);
-        this.setState({loading: false})
+        this.setState({ loading: false })
 
         if (res.message && res.message === 'invalid or expired jwt') {
             this.props.history.push('/login')
@@ -133,14 +133,14 @@ class Attendance extends Component {
             }
         }
 
-        this.setState({loading: true})
+        this.setState({ loading: true })
         const res = await post(`${config().api}/v1/attendances/${this.state.attendanceId}/members`, attendanceMembers);
-        this.setState({loading: false})
+        this.setState({ loading: false })
         if (!res.success) {
             return;
         }
 
-        this.setState({totalAttendance: res.result.members.length});
+        this.setState({ totalAttendance: res.result.members.length });
     }
     render = _ => {
         return (
@@ -148,29 +148,29 @@ class Attendance extends Component {
                 <NavBar
                     mode="dark"
                     leftContent="전체보기"
-                    style={{backgroundColor: 'black'}}
-                    onLeftClick={_ => {this.props.history.push('/')}}
+                    style={{ backgroundColor: 'black' }}
+                    onLeftClick={_ => { this.props.history.push('/') }}
                     rightContent={this.state.loading
                         ? <Icon type="loading"></Icon>
                         : <a onClick={_ => this.search(this.state.date)}>
-                            <img src={reloadImage} width='23' style={{marginTop: '5px', marginRight: '4px'}}/>
+                            <img src={reloadImage} width='23' style={{ marginTop: '5px', marginRight: '4px' }} />
                         </a>}
                 >{this.state.date}&nbsp;<small>{this.state.totalAttendance === 0 ? '' : `(출석:${this.state.totalAttendance})`}</small></NavBar>
                 <SearchBar
                     placeholder="Search"
                     maxLength={8}
                     cancelText={"취소"}
-                    onChange={v=>this.setState({ filter: v })}
+                    onChange={v => this.setState({ filter: v })}
                 />
                 {this.state.groups.map(g => <div key={g.teacherId}>
-                    <WhiteSpace size="lg"/>
+                    <WhiteSpace size="lg" />
                     <AttendanceDetail
                         data={g}
                         onChange={this.setAttendance}
                         onSave={this.save}
                         filter={this.state.filter}
                     />
-                    </div>)}
+                </div>)}
             </div>
         );
     };

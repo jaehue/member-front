@@ -30,63 +30,64 @@ class AttendanceDetail extends Component {
                 <Card full>
                     <Card.Header
                         title={`${teacherName} 선생님`}
-                        thumb={<img src={groupImage} width='22px'/>}
+                        thumb={<img src={groupImage} width='22px' />}
                         extra={
-                        <Button
-                            type="primary"
-                            inline size="small"
-                            style = { this.state.disabled ? { marginRight: '4px', backgroundColor: 'black' } : { marginRight: '4px' }}
-                            onClick = { _ => {
-                                if (!this.state.disabled) {
-                                    this.props.onSave();
+                            <Button
+                                type="primary"
+                                inline size="small"
+                                style={this.state.disabled ? { marginRight: '4px', backgroundColor: 'black' } : { marginRight: '4px' }}
+                                onClick={_ => {
+                                    if (!this.state.disabled) {
+                                        this.props.onSave();
+                                    }
+                                    this.setState({ disabled: !this.state.disabled })
                                 }
-                                this.setState({ disabled: !this.state.disabled })}
-                            }
-                        >
-                            {this.state.disabled ? "출석체크" : "완료"}
-                        </Button>}
+                                }
+                            >
+                                {this.state.disabled ? "출석체크" : "완료"}
+                            </Button>}
                     />
                     <Card.Body>
                         <List renderHeader={() => <div>
-                                <span>출석 {attendance} | 결석 {absences}</span>
-                                <div style={{float: 'right', marginRight: '6px'}}>
-                                    {
-                                        students.length <= 0 ? '' :
+                            <span>출석 {attendance} | 결석 {absences}</span>
+                            <div style={{ float: 'right', marginRight: '6px' }}>
+                                {
+                                    students.length <= 0 ? '' :
                                         <div>
-                                            <span>{students[0].lastChecks[1].date.substring(5,10)}</span>
+                                            <span>{students[0].lastChecks[1].date.substring(5, 10)}</span>
                                             <span>&nbsp;&nbsp;...&nbsp;&nbsp;</span>
-                                            <span>{students[0].lastChecks[4].date.substring(5,10)}</span>
+                                            <span>{students[0].lastChecks[4].date.substring(5, 10)}</span>
                                         </div>
-                                    }
-                                </div>
-                            </div>}>
+                                }
+                            </div>
+                        </div>}>
                             {students.map(s =>
                                 <div key={s.id}>
-                                {this.state.disabled ?
-                                    <List.Item extra={
-                                        s.lastChecks.slice(1).map(c =>
-                                            <span key={c.date}>
-                                                <Icon
-                                                    type={c.isAttendance?'check-circle':'cross-circle'}
-                                                    size='xxs'
-                                                    style={{marginRight: '10px', marginTop:'10px'}}
-                                                />
-                                            </span>
-                                        )
+                                    {this.state.disabled ?
+                                        <List.Item extra={
+                                            s.lastChecks.slice(1).map(c =>
+                                                <span key={c.date}>
+                                                    <Icon
+                                                        type={c.isAttendance ? 'check-circle' : 'cross-circle'}
+                                                        size='xxs'
+                                                        style={{ marginRight: '10px', marginTop: '10px' }}
+                                                    />
+                                                </span>
+                                            )
                                         }>
-                                        <Icon
-                                            size={'sm'}
-                                            type={s.lastChecks[0].isAttendance ? 'check-circle' : 'cross-circle'}
-                                            style={{marginBottom: '-5px', marginRight: '15px'}}
-                                        />{s.name}
-                                    </List.Item> :
-                                    <Checkbox.CheckboxItem
-                                        checked={s.lastChecks[0].isAttendance}
-                                        onChange={e => this.props.onChange(this.props.data.teacherId, s.id, e.target.checked)}
-                                    >
-                                        {s.name}
-                                    </Checkbox.CheckboxItem>
-                                }
+                                            <Icon
+                                                size={'sm'}
+                                                type={s.lastChecks[0].isAttendance ? 'check-circle' : 'cross-circle'}
+                                                style={{ marginBottom: '-5px', marginRight: '15px' }}
+                                            />{s.name}
+                                        </List.Item> :
+                                        <Checkbox.CheckboxItem
+                                            checked={s.lastChecks[0].isAttendance}
+                                            onChange={e => this.props.onChange(this.props.data.teacherId, s.id, e.target.checked)}
+                                        >
+                                            {s.name}
+                                        </Checkbox.CheckboxItem>
+                                    }
                                 </div>
                             )}
                         </List>

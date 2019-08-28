@@ -18,7 +18,7 @@ class AttendanceTotal extends Component {
         this.search()
     }
     search = async _ => {
-        this.setState({loading: true})
+        this.setState({ loading: true })
 
         const today = new Date();
         const dd = String(today.getDate()).padStart(2, '0');
@@ -26,7 +26,7 @@ class AttendanceTotal extends Component {
         const yyyy = today.getFullYear();
 
         const res = await get(`${config().api}/v1/attendances/latest/${yyyy}-${mm}-${dd}?from=${yyyy}-01-01`);
-        this.setState({loading: false})
+        this.setState({ loading: false })
 
         if (res.message && res.message === 'invalid or expired jwt') {
             this.props.history.push('/login')
@@ -59,34 +59,34 @@ class AttendanceTotal extends Component {
             s.total = total
         })
         // students.sort((a,b) => a.total > b.total ? -1 : 1)
-        students.sort((a,b) => a.name < b.name ? -1 : 1)
+        students.sort((a, b) => a.name < b.name ? -1 : 1)
         return (
             <div>
                 <NavBar
                     mode="dark"
                     leftContent={<Icon type="left" />}
-                    onLeftClick={_ => {this.props.history.push('/')}}
-                    style={{backgroundColor: 'black'}}
+                    onLeftClick={_ => { this.props.history.push('/') }}
+                    style={{ backgroundColor: 'black' }}
                 >출석현황</NavBar>
                 <SearchBar
                     placeholder="Search"
                     maxLength={8}
                     cancelText={"취소"}
-                    onChange={v=>this.setState({ filter: v })}
+                    onChange={v => this.setState({ filter: v })}
                 />
                 <List>
                     {students.filter(s => s.total > 0).map(s => {
-                    return <List.Item>{s.name}&nbsp;<small style={{"color": "#888"}}>({this.pad(s.total,2)})</small>&nbsp;&nbsp;&nbsp;{
+                        return <List.Item>{s.name}&nbsp;<small style={{ "color": "#888" }}>({this.pad(s.total, 2)})</small>&nbsp;&nbsp;&nbsp;{
                             s.lastChecks.map(c =>
-                                <span key={c.date} style={{"color": "#888"}}>
+                                <span key={c.date} style={{ "color": "#888" }}>
                                     <Icon
-                                        type={c.isAttendance?'check-circle':'cross-circle'}
+                                        type={c.isAttendance ? 'check-circle' : 'cross-circle'}
                                         size='xxs'
-                                        style={{marginRight: '10px', marginTop:'10px'}}
+                                        style={{ marginRight: '10px', marginTop: '10px' }}
                                     />
                                 </span>
                             )
-                            }
+                        }
                         </List.Item>
                     })}
                 </List>

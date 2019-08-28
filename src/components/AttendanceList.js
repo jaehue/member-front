@@ -21,9 +21,9 @@ class AttendanceList extends Component {
         this.search()
     }
     search = async _ => {
-        this.setState({loading: true})
+        this.setState({ loading: true })
         const res = await get(`${config().api}/v1/attendances`);
-        this.setState({loading: false})
+        this.setState({ loading: false })
 
         if (res.message && res.message === 'invalid or expired jwt') {
             this.props.history.push('/login')
@@ -44,27 +44,29 @@ class AttendanceList extends Component {
                 </div>
                 <NavBar
                     mode="dark"
-                    style={{backgroundColor: 'black'}}
+                    style={{ backgroundColor: 'black' }}
                     rightContent={
                         <a onClick={_ => this.props.history.push('/total')}>
                             <Icon type="ellipsis" />
                         </a>
                     }
-                    // rightContent={this.state.loading
-                    //     ? <Icon type="loading"></Icon>
-                    //     : <a onClick={_ => this.search()}>
-                    //         <img src={reloadImage} width='23' style={{marginTop: '5px', marginRight: '4px'}}/>
-                    //     </a>}
+                // rightContent={this.state.loading
+                //     ? <Icon type="loading"></Icon>
+                //     : <a onClick={_ => this.search()}>
+                //         <img src={reloadImage} width='23' style={{marginTop: '5px', marginRight: '4px'}}/>
+                //     </a>}
                 >출석현황</NavBar>
                 <List>
                     {!this.state.attendances ? '' : this.state.attendances.map(d => (
                         <Item key={d.id}
                             arrow="horizontal"
                             multipleLine
-                            onClick={_ => {this.props.history.push({
-                                pathname:'/'+d.date,
-                                state: { attendanceId: d.id }
-                            })}}
+                            onClick={_ => {
+                                this.props.history.push({
+                                    pathname: '/' + d.date,
+                                    state: { attendanceId: d.id }
+                                })
+                            }}
                         >
                             {d.date}
                             <Brief>학생 {d.studentCount}</Brief>
