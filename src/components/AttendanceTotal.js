@@ -77,8 +77,14 @@ class AttendanceTotal extends Component {
                 <List>
                     {students.filter(s => s.total > 0).map(s => {
                         return <List.Item>{s.name}&nbsp;<small style={{ "color": "#888" }}>({this.pad(s.total, 2)})</small>&nbsp;&nbsp;&nbsp;{
-                            s.lastChecks.map(c =>
+                            s.lastChecks.map((c, i) =>
                                 <span key={c.date} style={{ "color": "#888" }}>
+                                    <small>
+                                        {
+                                            i == 0 ? '' :
+                                                s.lastChecks[i - 1].date.substring(5, 7) !== c.date.substring(5, 7) ? <span>|&nbsp;&nbsp;</span> : ''
+                                        }
+                                    </small>
                                     <Icon
                                         type={c.isAttendance ? 'check-circle' : 'cross-circle'}
                                         size='xxs'
