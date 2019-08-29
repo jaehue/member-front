@@ -75,8 +75,8 @@ class AttendanceTotal extends Component {
                     onChange={v => this.setState({ filter: v })}
                 />
                 <List>
-                    {students.filter(s => s.total > 0).map(s => {
-                        return <List.Item>{s.name}&nbsp;<small style={{ "color": "#888" }}>({this.pad(s.total, 2)})</small>&nbsp;&nbsp;&nbsp;{
+                    {students.filter(s => s.total > 0).map(s => <List.Item>
+                        <div style={{ "overflow": "scroll" }}>{s.name}&nbsp;<small style={{ "color": "#888" }}>({this.pad(s.total, 2)})</small>&nbsp;&nbsp;&nbsp;{
                             s.lastChecks.map((c, i) =>
                                 <span key={c.date} style={{ "color": "#888" }}>
                                     <small>
@@ -93,10 +93,9 @@ class AttendanceTotal extends Component {
                                 </span>
                             )
                         }
-                        </List.Item>
-                    })}
+                        </div>
+                    </List.Item>)}
                 </List>
-
             </div>
         );
     };
