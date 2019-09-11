@@ -95,6 +95,8 @@ class Attendance extends Component {
             }
         }
 
+        groups.sort((a, b) => a.teacherName > b.teacherName ? 1 : -1)
+
         this.setState({ id: res.result.id, date, groups, totalAttendance });
     }
     setAttendance = (teacherId, studentId, isAttendance) => {
